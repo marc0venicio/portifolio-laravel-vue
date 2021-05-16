@@ -25,11 +25,14 @@
                     </div>
                     <i class="fas fa-bars btn-menumobile"></i>
                     <ul>
-                        <li><a href="#">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="#">Projetos</a></li>
                         <li><a href="#">Skills</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/contato">Contato</a></li>
+                        @if (Auth::check())
+                                <li> <a href="/blog/create">Painel</a></li>
+                        @endif
                     </ul>
                 </div>
             </nav>

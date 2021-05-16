@@ -1,39 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="css/style.css">
-    <title>Marco Venicio</title>
-</head>
-
-<body>
-    <div id="progressbar"></div>
-    <div id="scrollpath"></div>
-    <main class="container">
-        <header>
-            <nav>
-                <div class="menu">
-                    <div class="logo">
-                        <a href="#"><img src="img/logo.png" alt="logo overlord intellectus"></a>
-                    </div>
-                    <i class="fas fa-bars btn-menumobile"></i>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#">Projetos</a></li>
-                        <li><a href="#">Skills</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contato.html">Contato</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+@extends('layout.app')
+@section('content')
         <section>
             <div class="img-blog"></div>
             <div class="center-blog">
@@ -49,6 +15,7 @@
                 </div>
             </div>
         </section>
+        
         <section class="section-blog">
             <div class="card-blog">
                 <img src="img/blog-tec.jpg" alt="">
@@ -74,10 +41,17 @@
             </div>
         </section>
         <section class="main-blog">
-            <section class="row-blog">
+            
+            @foreach ($posts as $post)
+                <section class="row-blog">
+                    @if (Auth::check())
+                <div class="auth-create">
+                    <span> <a href="/blog/create"> Criar novo post</a></span>
+                </div>
+            @endif
                 <div class="title-blog-card">
-                    <h3>Lorem ipsum dolor sit amet consectetur adipisicing.</h3>
-                    <span><i class="far fa-calendar-alt"></i>janeiro, 7 2021| por Marco Venicio </span>
+                    <h3>{{$post->title}}</h3>
+                    <span><i class="far fa-calendar-alt"></i> {{date('jS M Y ', strtotime($post->updated_at))}} por {{$post->user->name}} </span>
                 </div>
                 <div class="col-blog">
                     <div class="img-card-blog">
@@ -85,10 +59,9 @@
                     </div>
                     <div class="title-card-blog">
 
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero harum necessitatibus aliquam nostrum dolores earum dicta fugiat numquam nesciunt culpa illo saepe unde beatae, placeat dolorem ullam deleniti? Exercitationem sequi
-                            aspernatur nisi consequuntur vitae dignissimos quas! Neque iste deserunt similique!</p>
+                        <p> {{$post->description}} </p>
                         <div>
-                            <button class="btn-blog">Saiba mais</button>
+                            <button class="btn-blog"> <a href="/blog/{{$post->slug}}">Saiba mais</a></button>
                         </div>
                     </div>
                 </div>
@@ -173,8 +146,10 @@
                         <li><a href="">5</a></li>
                         <li><a href="">></a></li>
                     </ul>
-                </div>
+                </div>            
             </section>
+            @endforeach
+
             <aside class="aside-blog">
                 <h3>Posts recentes</h3>
                 <div class="aside-blog-img">
@@ -209,45 +184,4 @@
                 </div>
             </aside>
         </section>
-        <footer class="footer">
-            <div class="flex">
-                <div>
-                    <h2>Overlord Intellectus</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim quod nisi repellendus minus. Tempora, facere earum? A quod est, laboriosam, ut assumenda placeat eius fugit fugiat sit praesentium, aspernatur optio!</p>
-                </div>
-                <div>
-                    <ul>
-                        <li>
-                            <h2>Explorar</h2>
-                        </li>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Projetos</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <ul>
-                        <li>
-                            <h2>Redes sociais</h2>
-                        </li>
-                        <li>
-                            <a href=""></a>Linkedin</li>
-                        <li>
-                            <a href=""></a>Github</li>
-                        <li>
-                            <a href=""></a>Youtube</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="b-footer">
-                <p> All rigths Reserved by &copy; Marco Venicio</p>
-            </div>
-        </footer>
-    </main>
-    <script src="js/vanilla-tilt.min.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
-</body>
-
-</html>
+        @endsection
