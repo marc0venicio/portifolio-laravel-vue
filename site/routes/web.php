@@ -19,7 +19,11 @@ Route::get('/', [BlogController::class, 'index']);
 Route::get('/blog', [PostController::class, 'index']);
 Route::get('/contato', [BlogController::class, 'contato']);
 Route::get('/register', [BlogController::class, 'register']);
-Route::get('/blog/create', [PostController::class, 'create']);
+Route::get('/create', [PostController::class, 'createBlog'])->middleware('auth');
+Route::get('/assinantes', [PostController::class, 'client'])->middleware('auth');
+Route::post('/blog-create', [PostController::class, 'store']);
+Route::get('/blog/{slug}', [PostController::class, 'show']);
+Route::post('/contato', [BlogController::class, 'store']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Post;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -19,9 +20,14 @@ class PostController extends Controller
                 ->with('posts', Blog::orderBy('updated_at', 'DESC')->get());
     }
 
-    public function create()
+    public function createBlog()
     {
         return view('create-blog');
+    }
+
+    public function client()
+    {
+        return view('client');
     }
 
     /**
@@ -32,18 +38,37 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|mimes:jpg,png.jpeg|max:5048',
+        ]);
+
+        $newImageName = uniqid() . '-'. $request->title. '.'.$request->image->extension();
+        $request->image->move(public_path('images'), $newImageName);
+        
+        Blog::create([
+            'title'=>$request->input('title'),
+            'description'=>$request->input('description'),
+            'slug'=>SlugService::createSlug(Blog::class,'slug', $request->title),
+            'image_path'=>$newImageName,
+            'user_id'=> auth()->user()->id
+        ]);
+
+        return redirect('/create')
+                ->with('message', 'post criado com sucesso');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  string $slug
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($slug)
     {
-        //
+        return view('blog-show')
+                ->with('post', Blog::where('slug', $slug)->first());
     }
 
     /**
