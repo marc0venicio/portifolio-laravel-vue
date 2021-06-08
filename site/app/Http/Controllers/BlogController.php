@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
 use App\Models\Blog;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -35,16 +36,13 @@ class BlogController extends Controller
             'telephone'=>'required',
             'message' =>'required'
         ]);
-
-        $data = array(
-            'name' =>$request->name,
-            'last_name' =>$request->last_name,
-            'email' =>$request->mail,
-            'telephone'=>$request->telephone,
-            'message' =>$request->message
-        );
-        Mail::to( config('mail.from.address'))
-                ->send(new SendMail($data));
+        $contato = new ContactForm($request);
+        try {
+        $contato->sendMail();
+            
+        } catch (\Exception $error) {
+            return back()->with("error", "ocorreu um erro inesperado: {$error->getMessage()}");
+        }
         return back()
         ->with('success', 'obrigado por nos contactar');
     }

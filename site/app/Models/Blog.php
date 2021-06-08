@@ -21,7 +21,12 @@ class Blog extends Model
         'description',
         'image_path',
         'slug',
-        'user_id'
+        'user_id',
+        'name',
+        'last_name',
+        'email',
+        'telephone',
+        'message'
     ];
     public function user()
     {

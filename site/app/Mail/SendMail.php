@@ -19,7 +19,7 @@ class SendMail extends Mailable
      */
     public function __construct($data)
     {
-        //
+
     }
 
     /**

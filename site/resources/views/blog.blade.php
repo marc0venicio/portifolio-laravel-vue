@@ -63,7 +63,7 @@
                     </div>
                     <div class="title-card-blog">
 
-                        <p> {{$post->description}} </p>
+                        <p> {{Str::limit($post->description, 200, '...') }} </p>
                         <div>
                             <button class="btn-blog"> <a href="/blog/{{ $post->slug }}">Saiba mais</a></button>
                         </div>
